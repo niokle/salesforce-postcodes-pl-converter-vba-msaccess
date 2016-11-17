@@ -1,0 +1,181 @@
+Sub konwerter()
+    Dim bazaZrodlowa As Recordset
+    Set bazaZrodlowa = CurrentDb.OpenRecordset("DataLoader")
+    Dim bazaDocelowa As Recordset
+    Set bazaDocelowa = CurrentDb.OpenRecordset("Structure")
+    
+    Dim l As Long
+    Dim l2 As Long
+    Dim kod As String
+    Dim kod2 As String
+    
+    bazaZrodlowa.MoveFirst
+    Do Until bazaZrodlowa.EOF
+        Select Case bazaZrodlowa.Fields("OPERATION").Value
+            Case "Equals"
+                For l = 1 To Len(bazaZrodlowa.Fields("VALUE").Value)
+                    If Mid(bazaZrodlowa.Fields("VALUE").Value, l, 1) = "," Then
+                        bazaDocelowa.AddNew
+                        bazaDocelowa.Fields("Territory").Value = bazaZrodlowa.Fields("MASTERLABEL").Value
+                        bazaDocelowa.Fields("PoBox").Value = kod
+                        bazaDocelowa.Update
+                        kod = ""
+                    Else
+                        kod = kod & Mid(bazaZrodlowa.Fields("VALUE").Value, l, 1)
+                    End If
+                Next l
+                bazaDocelowa.AddNew
+                bazaDocelowa.Fields("Territory").Value = bazaZrodlowa.Fields("MASTERLABEL").Value
+                bazaDocelowa.Fields("PoBox").Value = kod
+                bazaDocelowa.Update
+                kod = ""
+            Case "Startswith"
+                 For l = 1 To Len(bazaZrodlowa.Fields("VALUE").Value)
+                    If Mid(bazaZrodlowa.Fields("VALUE").Value, l, 1) = "," Then
+                        Select Case Len(CStr(kod))
+                            Case 1
+                                For l2 = 0 To 9999
+                                    Select Case Len(CStr(l2))
+                                        Case 1
+                                            kod2 = kod & "000" & l2
+                                        Case 2
+                                            kod2 = kod & "00" & l2
+                                        Case 3
+                                            kod2 = kod & "0" & l2
+                                        Case 4
+                                            kod2 = kod & "" & l2
+                                    End Select
+                                    bazaDocelowa.AddNew
+                                    bazaDocelowa.Fields("Territory").Value = bazaZrodlowa.Fields("MASTERLABEL").Value
+                                    bazaDocelowa.Fields("PoBox").Value = kod2
+                                    bazaDocelowa.Update
+                                    kod2 = ""
+                                Next l2
+                            Case 2
+                                For l2 = 0 To 999
+                                    Select Case Len(CStr(l2))
+                                        Case 1
+                                            kod2 = kod & "00" & l2
+                                        Case 2
+                                            kod2 = kod & "0" & l2
+                                        Case 3
+                                            kod2 = kod & "" & l2
+                                    End Select
+                                    bazaDocelowa.AddNew
+                                    bazaDocelowa.Fields("Territory").Value = bazaZrodlowa.Fields("MASTERLABEL").Value
+                                    bazaDocelowa.Fields("PoBox").Value = kod2
+                                    bazaDocelowa.Update
+                                    kod2 = ""
+                                Next l2
+                            Case 3
+                                For l2 = 0 To 99
+                                    Select Case Len(CStr(l2))
+                                        Case 1
+                                            kod2 = kod & "0" & l2
+                                        Case 2
+                                            kod2 = kod & "" & l2
+                                    End Select
+                                    bazaDocelowa.AddNew
+                                    bazaDocelowa.Fields("Territory").Value = bazaZrodlowa.Fields("MASTERLABEL").Value
+                                    bazaDocelowa.Fields("PoBox").Value = kod2
+                                    bazaDocelowa.Update
+                                    kod2 = ""
+                                Next l2
+                            Case 4
+                                For l2 = 0 To 9
+                                    kod2 = kod & "" & l2
+
+                                    bazaDocelowa.AddNew
+                                    bazaDocelowa.Fields("Territory").Value = bazaZrodlowa.Fields("MASTERLABEL").Value
+                                    bazaDocelowa.Fields("PoBox").Value = kod2
+                                    bazaDocelowa.Update
+                                    kod2 = ""
+                                Next l2
+                            Case 5
+                                kod2 = kod
+
+                                bazaDocelowa.AddNew
+                                bazaDocelowa.Fields("Territory").Value = bazaZrodlowa.Fields("MASTERLABEL").Value
+                                bazaDocelowa.Fields("PoBox").Value = kod2
+                                bazaDocelowa.Update
+                                kod2 = ""
+                        End Select
+                        kod = ""
+                    Else
+                        kod = kod & Mid(bazaZrodlowa.Fields("VALUE").Value, l, 1)
+                    End If
+                Next l 'end part 1
+                    Select Case Len(CStr(kod))
+                           Case 1
+                                For l2 = 0 To 9999
+                                    Select Case Len(CStr(l2))
+                                        Case 1
+                                            kod2 = kod & "000" & l2
+                                        Case 2
+                                            kod2 = kod & "00" & l2
+                                        Case 3
+                                            kod2 = kod & "0" & l2
+                                        Case 4
+                                            kod2 = kod & "" & l2
+                                    End Select
+                                    bazaDocelowa.AddNew
+                                    bazaDocelowa.Fields("Territory").Value = bazaZrodlowa.Fields("MASTERLABEL").Value
+                                    bazaDocelowa.Fields("PoBox").Value = kod2
+                                    bazaDocelowa.Update
+                                    kod2 = ""
+                                Next l2
+                            Case 2
+                                For l2 = 0 To 999
+                                    Select Case Len(CStr(l2))
+                                        Case 1
+                                            kod2 = kod & "00" & l2
+                                        Case 2
+                                            kod2 = kod & "0" & l2
+                                        Case 3
+                                            kod2 = kod & "" & l2
+                                    End Select
+                                    bazaDocelowa.AddNew
+                                    bazaDocelowa.Fields("Territory").Value = bazaZrodlowa.Fields("MASTERLABEL").Value
+                                    bazaDocelowa.Fields("PoBox").Value = kod2
+                                    bazaDocelowa.Update
+                                    kod2 = ""
+                                Next l2
+                            Case 3
+                                For l2 = 0 To 99
+                                    Select Case Len(CStr(l2))
+                                        Case 1
+                                            kod2 = kod & "0" & l2
+                                        Case 2
+                                            kod2 = kod & "" & l2
+                                    End Select
+                                    bazaDocelowa.AddNew
+                                    bazaDocelowa.Fields("Territory").Value = bazaZrodlowa.Fields("MASTERLABEL").Value
+                                    bazaDocelowa.Fields("PoBox").Value = kod2
+                                    bazaDocelowa.Update
+                                    kod2 = ""
+                                Next l2
+                            Case 4
+                                For l2 = 0 To 9
+                                    kod2 = kod & "" & l2
+
+                                    bazaDocelowa.AddNew
+                                    bazaDocelowa.Fields("Territory").Value = bazaZrodlowa.Fields("MASTERLABEL").Value
+                                    bazaDocelowa.Fields("PoBox").Value = kod2
+                                    bazaDocelowa.Update
+                                    kod2 = ""
+                                Next l2
+                            Case 5
+                                kod2 = kod
+
+                                bazaDocelowa.AddNew
+                                bazaDocelowa.Fields("Territory").Value = bazaZrodlowa.Fields("MASTERLABEL").Value
+                                bazaDocelowa.Fields("PoBox").Value = kod2
+                                bazaDocelowa.Update
+                                kod2 = ""
+                    End Select
+        End Select
+        kod = ""
+        bazaZrodlowa.MoveNext
+    Loop
+    MsgBox "completed!"
+End Sub
